@@ -3,7 +3,7 @@ import Todos from './Todos'
 import TodoForm from './TodoForm'
 
 class App extends Component {
-  render () {
+  render() {
     return (
       <div className="App">
         <h1>Redux TODOS!</h1>

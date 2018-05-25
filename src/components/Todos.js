@@ -1,36 +1,50 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { toggleTodo } from '../actions/todoActions'
 
 class Todos extends Component {
   state = {
-    todos: [
-      {
-        id: 0,
-        task: 'Test this Todo Page',
-        completed: false
-      },
-      {
-        id: 1,
-        task: 'Learn Redux',
-        completed: false
-      },
-      {
-        id: 2,
-        task: 'Learn React',
-        completed: true
-      }
-    ]
+    searchString: ''
   }
-  render () {
+  handleFormChange = (event) => {
+    this.setState({ searchString: event.target.value })
+
+  }
+  render() {
+    const filteredArray = this.props.todos.filter((todo) => {
+      return (
+        todo.task.includes(this.state.searchString)
+      )
+    })
+
     return (
       <div>
+        <input onChange={this.handleFormChange}
+          value={this.state.searchString} /><button> edit</button>
+        <form>
+          <input />
+        </form>
+        <br />
         <ul>
-          {this.state.todos.map(todo => (
-            <li key={todo.id}>{todo.task}: {todo.completed.toString()}</li>
+          {filteredArray.map(todo => (
+            <li
+              key={todo.id}
+              onClick={() => this.props.toggleTodo(todo.id)}
+            >
+              {todo.task}: {todo.completed.toString()}
+            </li>
           ))}
         </ul>
+
       </div>
     )
   }
 }
 
-export default Todos
+const mapStateToProps = (state) => {
+  return {
+    todos: state.todos
+  }
+}
+
+export default connect(mapStateToProps, { toggleTodo })(Todos)
